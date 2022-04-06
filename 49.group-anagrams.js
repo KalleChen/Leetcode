@@ -12,15 +12,17 @@
 var groupAnagrams = function (strs) {
   let ans = [strs];
   for (i = 0; i < 26; i++) {
-    const alphabet = "a" + i;
+    const alphabet = String.fromCharCode("a".charCodeAt(0) + i);
     const current = [];
     ans.forEach((as) => {
-      const exist = as.filter((a) => a.includes(alphabet));
-      const notExist = as.filter((a) => !a.includes(alphabet));
-      console.log(as)
-      console.log(alphabet, exist, notExist)
-      if (exist.length !== 0) current.push(exist);
-      if (notExist.length !== 0) current.push(notExist);
+      const diffLen = {};
+      as.forEach((a) => {
+        const len = a.split(alphabet).length - 1;
+        diffLen[len] = [...(diffLen?.[len] || []), a];
+      });
+      Object.keys(diffLen).forEach((k) => {
+        current.push(diffLen[k]);
+      });
     });
     ans = current;
   }
