@@ -12,20 +12,20 @@
 var jump = function (nums) {
   if (nums.length === 1) return 0;
   const db = {};
-  const jumpNext = (index) => {
-    if (db[index]) return db[index];
-    if (index + nums[index] >= nums.length - 1) {
-      db[index] = 1;
-      return 1;
-    }
-    let min = 999999;
+  let step = 0,
+    index = 0;
+  while (index + nums[index] < nums.length - 1) {
+    let max = 0,
+      select;
     for (let i = 1; i <= nums[index]; i++) {
-      const step = jumpNext(index + i);
-      if (step < min) min = step;
+      if (i + nums[index + i] > max) {
+        max = i + nums[index + i];
+        select = i;
+      }
     }
-    db[index] = 1 + min;
-    return 1 + min;
-  };
-  return jumpNext(0);
+    step++;
+    index += select;
+  }
+  return step + 1;
 };
 // @lc code=end
